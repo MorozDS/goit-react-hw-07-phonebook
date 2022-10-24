@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
-import { nanoid } from 'nanoid';
+import { addContact } from 'redux/operations';
+import { selectContacts } from 'redux/selectors';
 import s from './ContactForm.module.css';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const contacts = useSelector(state => state.contacts.items);
-  const nameInputId = nanoid();
-  const numberInputId = nanoid();
-
+  const [phone, setNumber] = useState('');
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     if (name === 'name') {
       setName(value);
-    } else if (name === 'number') {
+    } else if (name === 'phone') {
       setNumber(value);
     }
   };
@@ -29,30 +26,23 @@ export default function ContactForm() {
 
   const handleSubmit = event => {
     event.preventDefault();
+    const contact = { name: name, phone: phone };
 
     if (
-      contacts.find(
+      contacts?.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       )
     ) {
       return alert(`${name} is already in Contacts List!`);
     }
-    dispatch(
-      addContact({
-        id: nanoid(),
-        name,
-        number,
-      })
-    );
+    dispatch(addContact(contact));
     resetForm();
   };
 
   return (
     <form autoComplete="on" onSubmit={handleSubmit} className={s.form}>
       <div>
-        <label htmlFor={nameInputId} className={s.label}>
-          Name
-        </label>
+        <label className={s.label}>Name</label>
         <input
           type="text"
           name="name"
@@ -61,24 +51,20 @@ export default function ContactForm() {
           required
           onChange={handleInputChange}
           value={name}
-          id={nameInputId}
           placeholder=" Your Name"
           className={s.input}
         />
       </div>
       <div>
-        <label htmlFor={numberInputId} className={s.label}>
-          Phone
-        </label>
+        <label className={s.label}>Phone</label>
         <input
           type="tel"
-          name="number"
+          name="phone"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           onChange={handleInputChange}
-          value={number}
-          id={numberInputId}
+          value={phone}
           placeholder=""
           className={s.input}
         />

@@ -1,8 +1,20 @@
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import FilterContact from './FilterContact/FilterContact';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { selectIsloading, selectError } from 'redux/selectors';
+import { fetchContacts } from 'redux/operations';
 
 export default function App() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsloading);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
   return (
     <div
       style={{
@@ -22,7 +34,7 @@ export default function App() {
 
       <h2>Contacts</h2>
       <FilterContact />
-
+      {isLoading && !error && <b>Request in progress...</b>}
       <ContactList />
     </div>
   );
