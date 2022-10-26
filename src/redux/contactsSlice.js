@@ -56,13 +56,8 @@ const contactsSlice = createSlice({
       state.contacts.items.splice(index, 1);
     },
     [deleteContact.rejected]: handleRejected,
-
-    
   },
 });
 
-
-
 export const contactsReducer = contactsSlice.reducer;
 export const { filterContacts } = contactsSlice.actions;
-

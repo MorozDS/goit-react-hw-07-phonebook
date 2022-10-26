@@ -29,7 +29,7 @@ export default function ContactForm() {
     const contact = { name: name, phone: phone };
 
     if (
-      contacts?.find(
+      contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       )
     ) {

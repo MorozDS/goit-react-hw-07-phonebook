@@ -8,8 +8,6 @@ export default function ContactList() {
   const dispatch = useDispatch();
   const filteredContacts = useSelector(renderContactList);
 
-  console.log(filteredContacts);
-
   return (
     <ul className={s.list}>
       {filteredContacts.map(contact => (
